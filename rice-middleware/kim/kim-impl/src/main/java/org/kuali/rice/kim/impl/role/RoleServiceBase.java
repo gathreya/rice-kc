@@ -287,19 +287,22 @@ abstract class RoleServiceBase {
         if (CollectionUtils.isNotEmpty(roleIds)) {
             orCriteria.add(PredicateFactory.and(
                     PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode()),
+                    PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId),
                     PredicateFactory.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds)));
         }
 
         if ( StringUtils.isNotBlank(principalId) ) {
             orCriteria.add(PredicateFactory.and(
                     PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode()),
-                    PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId)));
+                    PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId),
+                    PredicateFactory.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds)));
         }
 
         if (CollectionUtils.isNotEmpty(groupIds)) {
             orCriteria.add(PredicateFactory.and(
                     PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode()),
-                    PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds)));
+                    PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds),
+                    PredicateFactory.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds)));
         }
 
         if (!orCriteria.isEmpty()) {
